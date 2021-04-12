@@ -56,12 +56,12 @@ def taskUpdate(request, pk):
 	return Response(serializer.data)
 
 
-@api_view(['DELETE'])
-def taskDelete(request, pk):
-	task = Task.objects.get(id=pk)
-	task.delete()
+# @api_view(['DELETE'])
+# def taskDelete(request, pk):
+# 	task = Task.objects.get(id=pk)
+# 	task.delete()
 
-	return Response('Item succsesfully delete!')
+# 	return Response('Item succsesfully delete!')
 
 
 

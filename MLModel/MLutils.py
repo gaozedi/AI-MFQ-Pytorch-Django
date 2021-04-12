@@ -40,9 +40,6 @@ def load_data():
         
     return category_lines, all_categories
 
-
-
-
 # Find letter index from all_letters, e.g. "a" = 0
 def letter_to_index(letter):
     return ALL_LETTERS.find(letter)
@@ -83,5 +80,6 @@ if __name__ == '__main__':
     # category_lines, all_categories = load_data()
     # print(category_lines['Flow'][:5])
     
-    # print(letter_to_tensor('J')) # [1, 57]
-    # print(line_to_tensor('Jones').size()) # [5, 1, 57]
+    print(letter_to_tensor('I')) # [1, 57]
+    # [5, 1, 57] 5:the number of chars,1:model expected to be in shape.57: number of different characters
+    print(line_to_tensor('ifelse').size()) 

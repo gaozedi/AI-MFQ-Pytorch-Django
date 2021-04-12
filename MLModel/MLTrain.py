@@ -2,8 +2,6 @@
 # coding: utf-8
 
 # In[1]:
-
-
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt 
@@ -22,7 +20,7 @@ class RNN(nn.Module):
         #Define 2 different liner layers
         self.i2h = nn.Linear(input_size + hidden_size, hidden_size)
         self.i2o = nn.Linear(input_size + hidden_size, output_size)
-        self.softmax = nn.LogSoftmax(dim=1)
+        self.softmax = nn.LogSoftmax(dim=1) # need the second dimention
         
     def forward(self, input_tensor, hidden_tensor):
         # combine input and hidden tensor
@@ -65,8 +63,6 @@ print(output.size())
 print(next_hidden.size())
 
 
-
-
 # apply softmax in the end.
 # this is the likelyhood of each character of each category
 def category_from_output(output):
@@ -80,7 +76,7 @@ def category_from_output(output):
 
 criterion = nn.NLLLoss()
 # hyperparameter
-learning_rate = 0.005
+learning_rate = 0.01
 optimizer = torch.optim.SGD(rnn.parameters(), lr=learning_rate)
 # whole name as tensor,
 def train(line_tensor, category_tensor):
@@ -100,12 +96,11 @@ def train(line_tensor, category_tensor):
 
 current_loss = 0
 all_losses = []
-plot_steps, print_steps = 100, 500
-n_iters = 2000
+plot_steps, print_steps = 100, 250
+n_iters = 10000
 loss = 0
 for i in range(n_iters):
     category, line, category_tensor, line_tensor = random_training_example(category_lines, all_categories)
-    
     output, loss = train(line_tensor, category_tensor)
     current_loss += loss 
     
@@ -119,9 +114,12 @@ for i in range(n_iters):
         print(f"{i+1} {(i+1)/n_iters*100} {loss:.4f} {line} / {guess} {correct}")
         
     
-# plt.figure()
-# plt.plot(all_losses)
-# plt.show()
+fig = plt.figure()
+fig.suptitle('RNN model ')
+plt.xlabel('iteration x 100')
+plt.ylabel('loss')
+plt.plot(all_losses)
+plt.show()
 # model can be saved
 
 def predict(input_line):
@@ -134,9 +132,6 @@ def predict(input_line):
         
         guess = category_from_output(output)
         return(guess+" "+str(loss))
-
-
-
 
 if __name__ == "__main__":
     predict("abcde 1 ifelse")
